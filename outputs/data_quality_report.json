@@ -1,0 +1,12 @@
+{
+    "source_file": "energydata_complete.csv",
+    "original_rows": 19735,
+    "final_rows": 19735,
+    "columns": 36,
+    "duplicates_removed": 0,
+    "missing_values": 0,
+    "duplicated_timestamps": 0,
+    "start_date": "2016-01-11T17:00:00",
+    "end_date": "2016-05-27T18:00:00",
+    "most_common_interval_minutes": 10.0
+}
