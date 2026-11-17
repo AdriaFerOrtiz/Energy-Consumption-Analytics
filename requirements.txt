@@ -1,4 +1,8 @@
+annotated-doc==0.0.6
+annotated-types==0.8.0
+anyio==4.16.0
 asttokens @ file:///C:/Users/task_177313476361522/croot/asttokens_1773135662149/work
+click==8.5.1
 cloudpickle @ file:///C:/miniconda3/conda-bld/cloudpickle_1764930554745/work
 colorama @ file:///C:/Users/dev-admin/perseverance-python-buildout/croot/colorama_1699472650914/work
 comm @ file:///C:/miniconda3/conda-bld/comm_1763119289758/work
@@ -6,7 +10,10 @@ contourpy @ file:///D:/bld/bld/rattler-build_contourpy_1789746819/work
 cycler @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_cycler_1764466758/work
 debugpy @ file:///C:/Users/task_Zgrxo--2RoqmN_0/croot/debugpy_1783354554848/work
 executing @ file:///C:/Users/task_178782631520319/croot/executing_1787826431763/work
+fastapi==0.163.1
 fonttools @ file:///D:/bld/fonttools_1791995196719/work
+h11==0.16.0
+idna==3.20
 imbalanced-learn==0.14.2
 ipykernel @ file:///C:/Users/task_XpcUUV2hTUSCK_0/croot/ipykernel_1785763873743/work
 ipython @ file:///C:/Users/task_179015559801124/croot/ipython_1790155945324/work
@@ -26,6 +33,7 @@ munkres==1.1.4
 narwhals @ file:///C:/Users/task_Pbzo0V9fSAmZ4_0/croot/narwhals_1783944154627/work
 nest-asyncio2 @ file:///C:/Users/task_PiBcp5WbS1ON-_0/croot/nest-asyncio2_1785322580285/work
 numpy @ file:///C:/Users/task_179007476051912/croot/numpy_and_numpy_base_1790074843282/work/dist/numpy-2.5.3-cp312-cp312-win_amd64.whl#sha256=889e4ce734c002158a46705072ae96f7c3726ca5d57085daac951ead4a0bb5ad
+opentelemetry-api==1.45.2
 packaging==26.3
 pandas @ file:///C:/Users/task_179000184351087/croot/pandas_1790001984865/work
 parso @ file:///C:/Users/task_177867414302146/croot/parso_1778674212709/work
@@ -34,6 +42,8 @@ platformdirs @ file:///C:/Users/task_GH__lLuySmO8S_0/croot/platformdirs_17853121
 prompt_toolkit @ file:///C:/Users/task_XEhYrS5UQT6nU_0/croot/prompt-toolkit-split_1785325265778/work
 psutil @ file:///C:/Users/task_cUNPea7uRE2ln_0/croot/psutil_1784875525622/work
 pure_eval @ file:///C:/miniconda3/conda-bld/pure_eval_1757067062212/work
+pydantic==2.14.3
+pydantic_core==2.50.4
 Pygments @ file:///C:/Users/task_179034416338786/croot/pygments_1790344297282/work
 pyparsing @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pyparsing_1790063282/work
 PySide6==6.11.0
@@ -48,12 +58,15 @@ shiboken6==6.11.0
 six @ file:///C:/b/abs_149wuyuo1o/croot/six_1744271521515/work
 sklearn-compat==0.1.6
 stack_data @ file:///C:/miniconda3/conda-bld/stack_data_1757067057854/work
+starlette==1.10.0
 threadpoolctl @ file:///C:/miniconda3/conda-bld/threadpoolctl_1764361791480/work
 tornado @ file:///C:/Users/task_179085165788410/croot/tornado_1790852166142/work
 traitlets @ file:///C:/Users/task_177874328087517/croot/traitlets_1778743402902/work
+typing-inspection==0.4.5
 typing_extensions @ file:///C:/Users/task_fy7J-zTYSKin8_0/croot/typing_extensions_1784101044383/work
 tzdata @ file:///home/task_179086392456221/croot/python-tzdata_1790864057293/work
 unicodedata2 @ file:///D:/bld/unicodedata2_1789928033425/work
+uvicorn==0.54.0
 wcwidth @ file:///C:/Users/task_AI5EZ5QQSaqs8_0/croot/wcwidth_1783583518261/work
 wheel==0.47.0
 xgboost==3.4.1
