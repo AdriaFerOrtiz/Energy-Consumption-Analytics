@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 
 import pandas as pd
+from storage import save_to_database
 
 
 # --------------------------------------------------
@@ -269,6 +270,16 @@ def save_outputs(df, source_file, original_rows, duplicates_removed):
 
     with open(QUALITY_REPORT, "w", encoding="utf-8") as file:
         json.dump(report, file, indent=4, ensure_ascii=False)
+    
+    # Save processed datasets into SQLite
+    save_to_database(
+        processed_df=df,
+        hourly_df=hourly,
+        daily_df=daily,
+        source_file=source_file,
+        original_rows=original_rows,
+        duplicates_removed=duplicates_removed
+    )
 
     print("\nGenerated files:")
     print(f"- {PROCESSED_FILE}")

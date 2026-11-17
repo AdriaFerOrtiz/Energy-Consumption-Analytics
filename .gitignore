@@ -30,3 +30,10 @@ logs/*
 
 # Generated files
 *.log
+
+# Local databases
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
