@@ -1,0 +1,36 @@
+{
+    "target": "Appliances consumption in the next 10 minutes",
+    "target_unit": "Wh",
+    "original_rows": 19735,
+    "valid_prediction_pairs": 19734,
+    "number_of_features": 32,
+    "prediction_horizon_minutes": 10,
+    "data_split": {
+        "training": "70%",
+        "validation": "15%",
+        "test": "15%"
+    },
+    "validation_results": {
+        "Baseline": {
+            "MAE": 42.604729729729726,
+            "RMSE": 98.1076008846988,
+            "R2": -0.13129327795572987
+        },
+        "Random Forest": {
+            "MAE": 42.942811411420784,
+            "RMSE": 78.04523840404119,
+            "R2": 0.2840829286337021
+        },
+        "Histogram Gradient Boosting": {
+            "MAE": 29.21203414173927,
+            "RMSE": 62.35236176267397,
+            "R2": 0.5430426031752706
+        }
+    },
+    "selected_model": "Histogram Gradient Boosting",
+    "test_metrics": {
+        "MAE": 32.07096400531738,
+        "RMSE": 63.14093371744976,
+        "R2": 0.517220317903277
+    }
+}
