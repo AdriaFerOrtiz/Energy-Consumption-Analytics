@@ -8,6 +8,11 @@ import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
+import sqlite3
+import time
+
+from datetime import datetime, timezone
+from monitoring import get_logger
 
 # --------------------------------------------------
 # 1. CONFIGURATION
@@ -17,6 +22,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 MODEL_PATH = PROJECT_ROOT / "models" / "best_energy_model.joblib"
 
+DB_PATH = PROJECT_ROOT / "data" / "energy_analytics.db"
 
 # --------------------------------------------------
 # 2. LOAD TRAINED MODEL
@@ -49,6 +55,102 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# --------------------------------------------------
+# API MONITORING
+# --------------------------------------------------
+
+logger = get_logger("energy_api")
+
+
+def initialize_api_monitoring():
+
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    with sqlite3.connect(DB_PATH) as connection:
+
+        connection.execute("""
+            CREATE TABLE IF NOT EXISTS api_requests (
+                request_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp_utc TEXT NOT NULL,
+                method TEXT NOT NULL,
+                endpoint TEXT NOT NULL,
+                status_code INTEGER NOT NULL,
+                duration_ms REAL NOT NULL
+            )
+        """)
+
+
+initialize_api_monitoring()
+
+
+@app.middleware("http")
+async def monitor_requests(request, call_next):
+
+    start_time = time.perf_counter()
+
+    status_code = 500
+
+    try:
+
+        response = await call_next(request)
+
+        status_code = response.status_code
+
+        return response
+
+    except Exception:
+
+        logger.exception(
+            "Unhandled API error: %s %s",
+            request.method,
+            request.url.path
+        )
+
+        raise
+
+    finally:
+
+        duration_ms = round(
+            (time.perf_counter() - start_time) * 1000,
+            2
+        )
+
+        timestamp = datetime.now(
+            timezone.utc
+        ).isoformat()
+
+        try:
+
+            with sqlite3.connect(DB_PATH, timeout=5) as connection:
+
+                connection.execute("""
+                    INSERT INTO api_requests (
+                        timestamp_utc,
+                        method,
+                        endpoint,
+                        status_code,
+                        duration_ms
+                    )
+                    VALUES (?, ?, ?, ?, ?)
+                """, (
+                    timestamp,
+                    request.method,
+                    request.url.path,
+                    status_code,
+                    duration_ms
+                ))
+
+        except sqlite3.Error:
+
+            logger.exception("Could not save API request metrics.")
+
+        logger.info(
+            "%s %s | Status: %s | Duration: %.2f ms",
+            request.method,
+            request.url.path,
+            status_code,
+            duration_ms
+        )
 
 # --------------------------------------------------
 # 4. REQUEST AND RESPONSE SCHEMAS
@@ -92,6 +194,40 @@ def get_required_features():
         "prediction_horizon_minutes": prediction_horizon
     }
 
+@app.get("/metrics")
+def get_api_metrics():
+
+    try:
+        with sqlite3.connect(DB_PATH) as connection:
+
+            result = connection.execute("""
+                SELECT
+                    COUNT(*),
+                    COALESCE(
+                        SUM(CASE WHEN status_code >= 400 THEN 1 ELSE 0 END),
+                        0
+                    ),
+                    ROUND(AVG(duration_ms), 2),
+                    MAX(timestamp_utc)
+                FROM api_requests
+            """).fetchone()
+
+        total_requests, failed_requests, avg_duration, last_request = result
+
+        return {
+            "total_requests": total_requests,
+            "failed_requests": failed_requests,
+            "successful_requests": total_requests - failed_requests,
+            "average_response_time_ms": avg_duration or 0,
+            "last_request_at_utc": last_request
+        }
+
+    except sqlite3.Error as error:
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Could not retrieve API metrics: {error}"
+        )
 
 # --------------------------------------------------
 # 7. PREDICTION ENDPOINT
